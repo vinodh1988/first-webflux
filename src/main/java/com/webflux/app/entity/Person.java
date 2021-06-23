@@ -1,7 +1,11 @@
 package com.webflux.app.entity;
 
+import org.springframework.data.annotation.Id;
+
 public class Person {
-   
+   //Person(1,"vinodh","mumbai") -->Update
+   //Person("Raj","Chennai") --> insert
+	@Id
    private int sno;
    private String name;
    private String city;
