@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webflux.app.entity.Person;
 import com.webflux.app.services.DataService;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -19,4 +21,10 @@ public class FirstController {
 	public Mono<String> getInfo(){
 		return data.getData();
 	}
+	
+	@GetMapping("/flux-people")
+	public Flux<Person> getPeople(){
+		return data.getPeople();
+	}
+	
 }
