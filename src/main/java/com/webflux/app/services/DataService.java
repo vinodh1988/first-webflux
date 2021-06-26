@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webflux.app.entity.Person;
+import com.webflux.app.messaging.MessageSender;
 import com.webflux.app.repos.PeopleRepository;
 
 import reactor.core.publisher.Flux;
@@ -17,6 +18,9 @@ public class DataService {
 	
 	@Autowired
 	  public  PeopleRepository repo;
+	
+	@Autowired
+	  public MessageSender sender;
 
 	  public Mono<String> getData(){
 		  return Mono.just("My First Webflux API");
@@ -37,6 +41,7 @@ public class DataService {
 	  }
 	  
 	  public Mono<Person> addPerson(Person p){
+		 sender.SendMessage(p.getName()+ " is added into postgre db"); 
 		 return repo.save(p);
 		  
 	  }
