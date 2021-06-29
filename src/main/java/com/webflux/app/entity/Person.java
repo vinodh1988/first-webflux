@@ -6,7 +6,7 @@ public class Person {
    //Person(1,"vinodh","mumbai") -->Update
    //Person("Raj","Chennai") --> insert
 	@Id
-   private int sno;
+   private Integer sno;
    private String name;
    private String city;
    
@@ -18,10 +18,10 @@ public Person(int sno, String name, String city) {
 	this.name = name;
 	this.city = city;
 }
-public int getSno() {
+public Integer getSno() {
 	return sno;
 }
-public void setSno(int sno) {
+public void setSno(Integer sno) {
 	this.sno = sno;
 }
 public String getName() {
@@ -35,6 +35,11 @@ public String getCity() {
 }
 public void setCity(String city) {
 	this.city = city;
+}
+
+@Override
+public String toString() {
+	return "Person [sno=" + sno + ", name=" + name + ", city=" + city + "]";
 }
    
    

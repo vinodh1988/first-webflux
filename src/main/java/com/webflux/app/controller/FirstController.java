@@ -8,16 +8,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webflux.app.entity.Person;
+import com.webflux.app.messaging.MessageSender;
 import com.webflux.app.services.DataService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
 
 @RestController
 @RequestMapping("/api")
 public class FirstController {
   @Autowired
   private DataService data;
+  
+  @Autowired
+	  public MessageSender sender;
 	
 	@GetMapping("/greet")
 	public Mono<String> getInfo(){
@@ -32,12 +37,19 @@ public class FirstController {
 	
 	@GetMapping("/people")
 	public Flux<Person> getPeople2(){
+		
 		return data.getPeopleData();
 	}
 	
 	@PostMapping("/people")
-	public Mono<Person> addPErson(@RequestBody Mono<Person> p){
-		return p.flatMap(data::addPerson);
+	public Mono<Person> addPerson(@RequestBody Mono<Person> p){
+		 return p.flatMap(data::addPerson).doOnNext(
+				   x->{
+					  sender.SendMessage(x);
+				   }
+				 );
+		
+	
 	}
 	
 }
