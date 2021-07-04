@@ -57,6 +57,11 @@ public class DataService {
 		 return repo.save(p);
 		 
 	  }
+	  public Mono<Void> addAuthor(Author a){
+		    // System.out.println(p.hashCode());
+			 return crepo.insert(a);
+			 
+		  }
 	  
 	  public Mono<Person> addPerson2(Person p){
 		    // System.out.println(p.hashCode());

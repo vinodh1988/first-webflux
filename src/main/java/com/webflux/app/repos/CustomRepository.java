@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.webflux.app.entity.Author;
 import com.webflux.app.entity.Author.AuthorBuilder;
@@ -19,6 +20,25 @@ public class CustomRepository  {
 @Autowired
 	DatabaseClient db;
 
+@Transactional
+public Mono<Void> insert(Author author)
+{
+            int newid=0;
+   System.out.println(author);
+   Book b=author.getBooks().iterator().next();
+        return  db.sql("insert into author (name) values(:name)")
+    .bind("name", author.getName())
+    .fetch()
+    .rowsUpdated()
+       .then(db.sql("insert into book(name,price,authorid) values(:name,:price,1)")
+        .bind("name", b.getName())
+        .bind("price", b.getPrice())
+        .fetch()
+        .rowsUpdated()
+        )
+       .then();
+       
+}
 public Mono<Person> addPerson(Person person){
 	   
 return db.sql("insert into person(name,city) values(:name,:city)")

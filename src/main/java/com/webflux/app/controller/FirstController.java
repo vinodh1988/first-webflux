@@ -61,6 +61,11 @@ public class FirstController {
 	
 	}
 	
+	@PostMapping("/author")
+	public Mono<Void> addAuthor(@RequestBody Mono<Author> p){
+		 return p.flatMap(data::addAuthor);
+	}
+	
 	@PostMapping("/people2")
 	public Mono<Person> addPerson2(@RequestBody Mono<Person> p){
 		 return p.flatMap(data::addPerson).doOnNext(
