@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.webflux.app.entity.Author;
 import com.webflux.app.entity.Person;
 import com.webflux.app.messaging.MessageSender;
 import com.webflux.app.services.DataService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple3;
 
 
 @RestController
@@ -41,6 +43,13 @@ public class FirstController {
 		return data.getPeopleData();
 	}
 	
+	@GetMapping("/authors")
+	public Flux<Author> getAuthors(){
+		
+		return data.getAuthorData();
+	}
+	
+	
 	@PostMapping("/people")
 	public Mono<Person> addPerson(@RequestBody Mono<Person> p){
 		 return p.flatMap(data::addPerson).doOnNext(
@@ -50,6 +59,24 @@ public class FirstController {
 				 );
 		
 	
+	}
+	
+	@PostMapping("/people2")
+	public Mono<Person> addPerson2(@RequestBody Mono<Person> p){
+		 return p.flatMap(data::addPerson).doOnNext(
+				   x->{
+					  sender.SendMessage(x);
+				   }
+				 );
+		
+	
+	}
+	
+	@GetMapping("/people-combine")
+	public Flux<Tuple3<Person,Person,Person>> groupThem(){
+		//return Flux.merge(data.getPeopleData(),data.getPeople(),data.getPeople2());
+		//return Flux.concat(data.getPeopleData(),data.getPeople(),data.getPeople2());
+		return Flux.zip(data.getPeopleData(),data.getPeople(),data.getPeople2());
 	}
 	
 }

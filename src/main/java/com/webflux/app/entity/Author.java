@@ -1,5 +1,7 @@
 package com.webflux.app.entity;
 
+import java.util.Set;
+
 import org.springframework.data.annotation.Id;
 
 import lombok.AllArgsConstructor;
@@ -13,13 +15,9 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Person {
-   //Person(1,"vinodh","mumbai") -->Update
-   //Person("Raj","Chennai") --> insert
-	@Id
-   private Integer sno;
-   private String name;
-   private String city;
-  
-   
+public class Author {
+	  @Id
+	  private int authorid;
+	  private String name;
+	  private Set<Book> books;
 }
